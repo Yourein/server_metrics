@@ -84,3 +84,38 @@ pub fn post_webhook(info: SystemInfo) -> Result<(), String> {
         Err("Could not send the post request".to_string())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn one_kilo_byte() {
+        assert_eq!(convert_to_SI(&1000_u64, "B"), "1.00KB");
+    }
+
+    #[test]
+    fn one_point_twenty_three_kilo_byte() {
+        assert_eq!(convert_to_SI(&1230_u64, "B"), "1.23KB");
+    }
+
+    #[test]
+    fn kilo_byte_rounded() {
+        assert_eq!(convert_to_SI(&1235_u64, "B"), "1.24KB");
+    }
+
+    #[test]
+    fn normal_lets_note_used() {
+        assert_eq!(convert_to_SI(&6016638976_u64, "B"), "6.02GB");
+    }
+
+    #[test]
+    fn normal_lets_note_free() {
+        assert_eq!(convert_to_SI(&2242838528_u64, "B"), "2.24GB");
+    }
+
+    #[test]
+    fn terabyte() {
+        assert_eq!(convert_to_SI(&1099511627776_u64, "B"), "1.10TB");
+    }
+}
