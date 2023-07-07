@@ -42,7 +42,7 @@ struct Field {
 fn convert_to_SI(n: &u64, unit: &str) -> String {
     let SI = vec!["", "K", "M", "G", "T", "P"];
     let mut index = 0;
-    while n / 1000_u64.pow(index) > 1 {
+    while n / 1000_u64.pow(index) >= 1000 {
         index += 1;
     }
 
