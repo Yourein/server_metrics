@@ -66,27 +66,27 @@ fn format_info(info: &SystemInfo) -> Post{
                 Field {
                     name: "Used Memory".to_string(),
                     value: convert_to_SI(&info.mem_used, "B"),
-                    inline: true
+                    inline: false
                 },
                 Field {
                     name: "Memory Usage".to_string(),
                     value: format!{"{:.2}%", &info.mem_usage},
-                    inline: true
+                    inline: false
                 },
                 Field {
                     name: "Used Storage".to_string(),
                     value: convert_to_SI(&info.storage_used, "B"),
-                    inline: true
+                    inline: false
                 },
                 Field {
-                    name: "Memory Usage".to_string(),
+                    name: "Storage Usage".to_string(),
                     value: format!{"{:.2}%", &info.storage_usage},
-                    inline: true
+                    inline: false
                 },
                 Field {
-                    name: "Global CPU Usage".to_string(),
+                    name: "Global CPU Usage (instantaneous value)".to_string(),
                     value: format!{"{:.2}%", &info.global_cpu_usage},
-                    inline: true
+                    inline: false
                 }
             ]
         }]
