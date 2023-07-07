@@ -2,13 +2,13 @@ use sysinfo::{System, SystemExt, CpuExt, DiskExt};
 
 #[derive(Debug)]
 pub struct SystemInfo {
-    pub mem_used        : u64,
-    pub mem_free        : u64,
-    pub mem_usage       : f32,
-    pub storage_used    : u64,
-    pub storage_free    : u64,
-    pub storage_usage   : f32,
-    pub global_cpu_usage: f32
+    pub mem_used        : u64, //Used memory as Byte
+    pub mem_free        : u64, //Free memory as Byte
+    pub mem_usage       : f32, //Percentage of used memory over total
+    pub storage_used    : u64, //Used storage as Byte
+    pub storage_free    : u64, //Free storage as Byte
+    pub storage_usage   : f32, //Percentage of used storage over total
+    pub global_cpu_usage: f32  //Percentage of usage of CPU socket
 }
 
 pub fn is_supported() -> bool {
