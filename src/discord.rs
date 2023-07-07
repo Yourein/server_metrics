@@ -1,3 +1,5 @@
+use crate::systeminfo::SystemInfo;
+use num;
 use reqwest::blocking::Client as reqwestClient;
 use serde::Serialize;
 
@@ -29,7 +31,20 @@ struct Field {
     inline: bool
 }
 
-pub fn post_webhook() -> Result<(), String> {
+
+/*
+ * Implemented only for u64, it is great to define macro_rules 
+ * if you want to use this function for other integer types.
+ */
+fn convert_to_SI(n: &u64) -> String {
+    
+}
+
+fn format_info(info: &SystemInfo){
+
+}
+
+pub fn post_webhook(info: SystemInfo) -> Result<(), String> {
     let client = reqwestClient::new();
 
     let payload = Post {
