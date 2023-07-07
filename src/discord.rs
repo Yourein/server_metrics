@@ -1,5 +1,4 @@
 use crate::systeminfo::SystemInfo;
-use num;
 use reqwest::blocking::Client as reqwestClient;
 use serde::Serialize;
 
@@ -35,9 +34,24 @@ struct Field {
 /*
  * Implemented only for u64, it is great to define macro_rules 
  * if you want to use this function for other integer types.
+ *
+ * Return format is "x.xx[SIPrefix][Unit]".
+ * Be careful about x.xx is rounded because of formatting {:.2}
  */
-fn convert_to_SI(n: &u64) -> String {
-    
+#[allow(non_snake_case)]
+fn convert_to_SI(n: &u64, unit: &str) -> String {
+    let SI = vec!["", "K", "M", "G", "T", "P"];
+    let mut index = 0;
+    while n / 1000_u64.pow(index) > 1 {
+        index += 1;
+    }
+
+    format!{
+        "{value:.2}{prefix}{value_unit}",
+        value = *n as f64 / (1000.0_f64).powf(index.into()),
+        prefix = SI[index as usize],
+        value_unit = unit
+    }
 }
 
 fn format_info(info: &SystemInfo){
