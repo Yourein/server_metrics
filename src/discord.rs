@@ -1,6 +1,7 @@
 use crate::systeminfo::SystemInfo;
 use reqwest::blocking::Client as reqwestClient;
 use serde::Serialize;
+use chrono::Local;
 
 //Insert webhook url before build
 const WHURL: &str = "";
@@ -54,23 +55,48 @@ fn convert_to_SI(n: &u64, unit: &str) -> String {
     }
 }
 
-fn format_info(info: &SystemInfo){
+fn format_info(info: &SystemInfo) -> Post{
+    let embed_title = format!{"Metrics on {}", Local::now().format("%m/%d %H:%M:%S")};
 
+    Post {
+        username: "Server metrics".to_string(),
+        embeds: vec![Embed {
+            title: embed_title.to_string(),
+            fields: vec![
+                Field {
+                    name: "Used Memory".to_string(),
+                    value: convert_to_SI(&info.mem_used, "B"),
+                    inline: true
+                },
+                Field {
+                    name: "Memory Usage".to_string(),
+                    value: format!{"{:.2}%", &info.mem_usage},
+                    inline: true
+                },
+                Field {
+                    name: "Used Storage".to_string(),
+                    value: convert_to_SI(&info.storage_used, "B"),
+                    inline: true
+                },
+                Field {
+                    name: "Memory Usage".to_string(),
+                    value: format!{"{:.2}%", &info.storage_usage},
+                    inline: true
+                },
+                Field {
+                    name: "Global CPU Usage".to_string(),
+                    value: format!{"{:.2}%", &info.global_cpu_usage},
+                    inline: true
+                }
+            ]
+        }]
+    }
 }
 
 pub fn post_webhook(info: SystemInfo) -> Result<(), String> {
     let client = reqwestClient::new();
 
-    let payload = Post {
-        username: "tester".to_string(),
-        embeds: vec![Embed {
-            title: "Test".to_string(),
-            fields: vec![
-                Field {name: "f1".to_string(), value: "v1".to_string(), inline: true},
-                Field {name: "f2".to_string(), value: "v2".to_string(), inline: true}
-            ]
-        }]
-    };
+    let payload = format_info(&info);
 
     if let Ok(res) = client.post(WHURL).json(&payload).send() {
         if res.status().as_u16() == 204 {
