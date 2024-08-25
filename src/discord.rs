@@ -64,8 +64,9 @@ fn format_info(info: &SystemInfo) -> Post{
             title: embed_title.to_string(),
             fields: vec![
                 Field {
-                    name: "Used Memory".to_string(),
-                    value: convert_to_SI(&info.mem_used, "B"),
+                    name: "Used Memory / Total Memory".to_string(),
+                    value: convert_to_SI(&info.mem_used, "B")
+                            + &" / " + &convert_to_SI(&(&info.mem_used + &info.mem_free), "B"),
                     inline: false
                 },
                 Field {
